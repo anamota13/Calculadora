@@ -10,6 +10,28 @@
         const display = document.querySelector('.display');
         const buttons = document.querySelectorAll('.buttons button');
 
+        // Funções apenas para multiplicação e divisão
+        function multiplicar(a, b) {
+            return a * b;
+        }
+        function dividir(a, b) {
+            return b !== 0 ? a / b : 'Erro';
+        }
+
+        function calcularExpressao(expr) {
+            // Expressão simples: número operador número (ex: 2*3 ou 4/2)
+            const match = expr.match(/^(-?\d+\.?\d*)([*/])(-?\d+\.?\d*)$/);
+            if (!match) return 'Erro';
+            const a = parseFloat(match[1]);
+            const op = match[2];
+            const b = parseFloat(match[3]);
+            switch(op) {
+                case '*': return multiplicar(a, b);
+                case '/': return dividir(a, b);
+                default: return 'Erro';
+            }
+        }
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const value = button.textContent;
@@ -17,11 +39,7 @@
                 if (value === 'AC') {
                     display.value = '';
                 } else if (value === '=') {
-                    try {
-                        display.value = eval(display.value);
-                    } catch (e) {
-                        display.value = 'Erro';
-                    }
+                    display.value = calcularExpressao(display.value);
                 } else {
                     display.value += value;
                 }
@@ -35,7 +53,7 @@
     <div class="calculator">
         <input type="text" class="display" disabled>
         <div class="buttons">
-            <button>+</button>
+            <button>*</button>
             <button>7</button>
             <button>8</button>
             <button>9</button>
@@ -43,11 +61,9 @@
             <button>4</button>
             <button>5</button>
             <button>6</button>
-            <button>*</button>
             <button>1</button>
             <button>2</button>
             <button>3</button>
-            <button>-</button>
             <button>0</button>
             <button>.</button>
             <button>=</button>
